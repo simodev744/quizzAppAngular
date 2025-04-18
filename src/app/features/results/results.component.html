@@ -1,0 +1,72 @@
+<div class="container mx-auto p-6 max-w-2xl">
+  <div class="bg-white p-8 rounded-lg shadow-xl text-center">
+    <h1 class="text-4xl font-bold mb-4 text-indigo-700">Quiz Complete!</h1>
+
+    <p class="text-xl text-gray-800 mb-2">
+      Your Score: <span class="font-bold text-indigo-600">{{ score }} / {{ totalQuestions }}</span>
+    </p>
+    <p class="text-lg text-gray-600 mb-6">
+      You answered {{ getCorrectAnswersCount() }} questions correctly.
+    </p>
+
+    <div *ngIf="!resultsSaved" class="mt-8 mb-6 border-t pt-6">
+      <label for="playerName" class="block text-sm font-medium text-gray-700 mb-2">Enter your name to save your score:</label>
+      <div class="flex gap-2 justify-center">
+        <input
+          type="text"
+          id="playerName"
+          [(ngModel)]="playerName"
+          placeholder="Your Name"
+          class="flex-grow px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <button
+          (click)="saveResult()"
+          [disabled]="!playerName.trim()"
+          class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Save Score
+        </button>
+      </div>
+    </div>
+    <div *ngIf="resultsSaved" class="mt-8 mb-6 text-green-600 font-medium">
+      Score saved successfully!
+    </div>
+
+    <!-- Bouton pour voir les détails -->
+    <button
+      (click)="toggleDetails()"
+      class="text-indigo-600 hover:text-indigo-800 text-sm font-medium mb-6"
+    >
+      {{ showDetails ? 'Hide' : 'Show' }} Answer Details
+    </button>
+
+
+    <!-- Détails des réponses (cachés par défaut) -->
+    <div *ngIf="showDetails" class="mt-4 text-left border-t pt-4 max-h-96 overflow-y-auto pr-2">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">Answer Review:</h3>
+      <div *ngFor="let q of answeredQuestions; let i = index" class="mb-4 p-3 rounded-md"
+           [ngClass]="q.is_correct ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
+        <p class="font-medium mb-1 text-gray-800">Q{{ i + 1 }}: <span [innerHTML]="q.question"></span></p>
+        <p class="text-sm" [ngClass]="q.is_correct ? 'text-green-700' : 'text-red-700'">
+          Your answer: <strong [innerHTML]="q.user_answer || 'Not answered'"></strong>
+          <span *ngIf="!q.is_correct"> | Correct: <strong [innerHTML]="q.correct_answer"></strong></span>
+        </p>
+      </div>
+    </div>
+
+
+    <!-- Boutons d'action -->
+    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+      <button
+        routerLink="/history"
+        class="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        View History
+      </button>
+      <button
+        routerLink="/"
+        class="w-full sm:w-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Play Again
+      </button>
+    </div>
+  </div>
+</div>

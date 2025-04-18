@@ -1,0 +1,15 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6 text-center text-indigo-700">Choose a Category</h1>
+
+  <div *ngIf="isLoading" class="text-center text-gray-600">Loading categories...</div>
+  <div *ngIf="error" class="text-center text-red-600 bg-red-100 p-3 rounded-md">{{ error }}</div>
+
+  <div *ngIf="!isLoading && !error" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <button
+      *ngFor="let category of categories$ | async"
+      (click)="selectCategory(category.id)"
+      class="bg-white p-4 rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 ease-in-out text-indigo-800 font-medium text-center transform hover:-translate-y-1">
+      {{ category.name }}
+    </button>
+  </div>
+</div>

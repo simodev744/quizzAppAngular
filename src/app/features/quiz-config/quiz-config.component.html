@@ -1,0 +1,30 @@
+<div class="container mx-auto p-6 max-w-lg">
+  <h1 class="text-3xl font-bold mb-6 text-center text-indigo-700">Configure Your Quiz</h1>
+
+  <div class="bg-white p-6 rounded-lg shadow-md space-y-6">
+    <div>
+      <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Number of Questions:</label>
+      <select id="amount" name="amount" [(ngModel)]="numberOfQuestions" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm">
+        <option *ngFor="let amount of questionAmounts" [value]="amount">{{ amount }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="difficulty" class="block text-sm font-medium text-gray-700 mb-1">Difficulty:</label>
+      <select id="difficulty" name="difficulty" [(ngModel)]="difficulty" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm capitalize">
+        <option *ngFor="let diff of difficulties" [value]="diff">{{ diff }}</option>
+      </select>
+    </div>
+
+    <div class="flex justify-between items-center mt-8">
+      <button routerLink="/" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Back to Categories
+      </button>
+      <button
+        (click)="startQuiz()"
+        class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+        Start Quiz!
+      </button>
+    </div>
+  </div>
+</div>

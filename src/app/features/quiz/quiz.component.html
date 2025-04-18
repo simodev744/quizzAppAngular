@@ -1,0 +1,49 @@
+<div class="container mx-auto p-4 md:p-6 min-h-screen flex flex-col items-center justify-center">
+
+  <div *ngIf="isLoading" class="text-center text-xl text-gray-600">Loading questions...</div>
+  <div *ngIf="error" class="text-center text-red-600 bg-red-100 p-4 rounded-md max-w-md">{{ error }}</div>
+
+  <div *ngIf="!isLoading && !error && currentQuestion" class="w-full max-w-2xl bg-white p-6 md:p-8 rounded-lg shadow-xl text-center">
+
+    <div class="flex justify-between items-center mb-4 text-sm text-gray-600">
+      <span>Question {{ currentQuestionIndex + 1 }} / {{ questions.length }}</span>
+      <span>Score: {{ score }}</span>
+    </div>
+
+    <!-- Timer Progress Bar -->
+    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6 dark:bg-gray-700">
+      <div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-1000 ease-linear" [style.width.%]="getTimerProgress()"></div>
+      <div class="text-center text-xs font-medium text-indigo-700 mt-1">{{ timeLeft }}s left</div>
+    </div>
+
+
+    <!-- Question Text -->
+    <h2 class="text-xl md:text-2xl font-semibold mb-8 text-gray-800" [innerHTML]="currentQuestion.question">
+      <!-- Utilisation de [innerHTML] car l'API renvoie des entités HTML (décodées dans le service) -->
+    </h2>
+
+    <!-- Answer Options -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Utilisation du pipe 'shuffle' ici -->
+      <button
+        *ngFor="let answer of (currentQuestion.all_answers ?? []) | shuffle"
+        (click)="selectAnswer(answer)"
+        [disabled]="answered"
+        [ngClass]="getButtonClass(answer)"
+             [innerHTML]="answer">
+        <!-- Utilisation de [innerHTML] pour les réponses aussi -->
+      </button>
+    </div>
+
+
+    <div *ngIf="answered" class="mt-6 p-3 rounded-md"
+         [ngClass]="currentQuestion.is_correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+      <span *ngIf="currentQuestion.is_correct">Correct!</span>
+      <span *ngIf="!currentQuestion.is_correct">
+          Incorrect! The correct answer was: <strong [innerHTML]="currentQuestion.correct_answer"></strong>
+      </span>
+      <span *ngIf="timeLeft <= 0 && !selectedAnswer" class="block mt-1 text-sm">Time ran out!</span>
+    </div>
+
+  </div>
+</div>
